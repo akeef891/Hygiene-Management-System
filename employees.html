@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employees • Hygiene Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="employees">
+    <div class="app">
+      <aside class="sidebar">
+        <h2>Hygiene</h2>
+
+        <nav>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="employees.html">Employees</a>
+          <a href="tasks.html">Tasks</a>
+          <a href="inspection.html">Inspection</a>
+        </nav>
+
+        <button onclick="logout()">Logout</button>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <button onclick="toggleSidebar()">☰</button>
+          <h1>Employees</h1>
+        </header>
+
+        <section class="page">
+          <section class="card">
+            <h1 class="h1">Add Employee</h1>
+
+          <form id="employeeForm" onsubmit="saveEmployee(event)" class="form">
+            <input type="hidden" id="employeeIdEdit" />
+            <input id="name" placeholder="Employee Name" required />
+            <input id="department" placeholder="Department" required />
+            <div class="button-container">
+              <button type="submit" class="btn-primary" id="employeeSubmitBtn">Add Employee</button>
+            </div>
+          </form>
+
+            <div id="employeeAlert" class="alert"></div>
+        </section>
+
+        <section>
+          <div>
+            <input id="searchEmployee" placeholder="Search employees..." onkeyup="filterEmployees()">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Department</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="employeeTable"></tbody>
+            </table>
+          </div>
+        </section>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

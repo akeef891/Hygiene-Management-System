@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tasks • Hygiene Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="tasks">
+    <div class="app">
+      <aside class="sidebar">
+        <h2>Hygiene</h2>
+
+        <nav>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="employees.html">Employees</a>
+          <a href="tasks.html">Tasks</a>
+          <a href="inspection.html">Inspection</a>
+        </nav>
+
+        <button onclick="logout()">Logout</button>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <button onclick="toggleSidebar()">☰</button>
+          <h1>Tasks</h1>
+        </header>
+
+        <section class="page">
+          <section class="card">
+            <h1 class="h1">Create Task</h1>
+
+          <form id="taskForm" onsubmit="addTask(event)" class="form form--tasks">
+            <label for="employeeId">Employee</label>
+            <select id="employeeId" required>
+              <option value="">Select Employee</option>
+            </select>
+
+            <label for="taskName">Task Name</label>
+            <input id="taskName" placeholder="Enter task name" required />
+
+            <label for="location">Location</label>
+            <input id="location" placeholder="Enter location" required />
+
+            <label for="dueDate">Due Date</label>
+            <input id="dueDate" type="date" required />
+
+            <div class="button-container">
+              <button class="btn-primary" type="submit">Add Task</button>
+            </div>
+          </form>
+
+            <div id="taskAlert" class="alert"></div>
+          </section>
+
+        <section>
+          <div>
+            <input id="searchTask" placeholder="Search tasks..." onkeyup="filterTasks()">
+            <table>
+              <thead>
+                <tr>
+                  <th>Task</th>
+                  <th>Location</th>
+                  <th>Employee ID</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="taskTable"></tbody>
+            </table>
+          </div>
+        </section>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manager Login • Hygiene Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-box">
+        <h2>🧼 HygienePro</h2>
+        <p class="login-sub">Manager Login</p>
+
+        <form onsubmit="login(event)">
+          <input type="email" id="email" placeholder="Enter Email" required>
+          <input type="password" id="password" placeholder="Enter Password" required>
+
+          <button type="submit" class="btn-primary">Login</button>
+        </form>
+
+        <a href="#" onclick="forgotPassword()" class="forgot-link">
+          Forgot Password?
+        </a>
+
+        <p id="loginAlert" class="error-text"></p>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
+

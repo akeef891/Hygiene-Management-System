@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inspection • Hygiene Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="inspections">
+    <div class="app">
+      <aside class="sidebar">
+        <h2>🧼 HygienePro</h2>
+
+        <nav>
+          <a href="dashboard.html"><i class="ri-dashboard-line"></i> Dashboard</a>
+          <a href="employees.html"><i class="ri-team-line"></i> Employees</a>
+          <a href="tasks.html"><i class="ri-task-line"></i> Tasks</a>
+          <a href="inspection.html"><i class="ri-search-eye-line"></i> Inspection</a>
+        </nav>
+
+        <button onclick="logout()">Logout</button>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <button onclick="toggleSidebar()">☰</button>
+          <h1>Inspection</h1>
+        </header>
+
+        <section class="page">
+          <section class="card">
+            <h1 class="h1">Add Inspection</h1>
+            <form id="inspectionForm" onsubmit="addInspection(event)" class="form">
+              <div>
+                <label for="employeeId">Employee</label>
+                <select id="employeeId" required>
+                  <option value="">Select Employee</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="date">Date</label>
+                <input id="date" type="date" required />
+              </div>
+
+              <div>
+                <h3>Hygiene Checklist</h3>
+
+                <div class="checklist">
+                  <label class="check-item">
+                    <span>Nails Clean</span>
+                    <input type="checkbox" id="nailsClean" name="nailsClean">
+                  </label>
+
+                  <label class="check-item">
+                    <span>Uniform Proper</span>
+                    <input type="checkbox" id="uniformProper" name="uniformProper">
+                  </label>
+
+                  <label class="check-item">
+                    <span>Gloves Wearing</span>
+                    <input type="checkbox" id="gloves" name="gloves">
+                  </label>
+
+                  <label class="check-item">
+                    <span>Mask Wearing</span>
+                    <input type="checkbox" id="mask" name="mask">
+                  </label>
+
+                  <label class="check-item">
+                    <span>Hair Net</span>
+                    <input type="checkbox" id="hairNet" name="hairNet">
+                  </label>
+
+                  <label class="check-item">
+                    <span>Hand Wash</span>
+                    <input type="checkbox" id="handWash" name="handWash">
+                  </label>
+
+                  <label class="check-item">
+                    <span>Shoes Clean</span>
+                    <input type="checkbox" id="shoesClean" name="shoesClean">
+                  </label>
+
+                  <label class="check-item">
+                    <span>ID Card</span>
+                    <input type="checkbox" id="idCard" name="idCard">
+                  </label>
+
+                  <label class="check-item">
+                    <span>Apron</span>
+                    <input type="checkbox" id="apron" name="apron">
+                  </label>
+
+                  <label class="check-item">
+                    <span>Hair Tied Properly</span>
+                    <input type="checkbox" id="hairTied" name="hairTied">
+                  </label>
+
+                  <label class="check-item">
+                    <span>No Jewelry</span>
+                    <input type="checkbox" id="noJewelry" name="noJewelry">
+                  </label>
+
+                  <label class="check-item">
+                    <span>Hands Sanitized</span>
+                    <input type="checkbox" id="handsSanitized" name="handsSanitized">
+                  </label>
+                </div>
+              </div>
+
+              <div class="inspection-submit">
+                <button type="submit" class="btn-primary">
+                  + Add Inspection
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <section class="table-block">
+            <input id="searchInspection" placeholder="Search inspections..." onkeyup="filterInspections()">
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Score</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inspectionTable"></tbody>
+            </table>
+            <p class="empty-state">No data available</p>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hygiene Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="dashboard">
+    <div class="app">
+      <aside class="sidebar">
+        <h2>🧼 HygienePro</h2>
+        <nav>
+          <a href="dashboard.html"><i class="ri-dashboard-line"></i> Dashboard</a>
+          <a href="employees.html"><i class="ri-team-line"></i> Employees</a>
+          <a href="tasks.html"><i class="ri-task-line"></i> Tasks</a>
+          <a href="inspection.html"><i class="ri-search-eye-line"></i> Inspection</a>
+        </nav>
+        <button onclick="logout()">Logout</button>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <button onclick="toggleSidebar()">☰</button>
+          <h1>Dashboard</h1>
+          <div>API: <strong id="apiBase"></strong></div>
+        </header>
+
+        <section class="page">
+          <div class="cards">
+            <div class="card">
+              <h3>Total Employees</h3>
+              <p id="totalEmployees">0</p>
+            </div>
+
+            <div class="card">
+              <h3>Pending Tasks</h3>
+              <p id="pendingTasks">0</p>
+            </div>
+
+            <div class="card">
+              <h3>Inspections Today</h3>
+              <p id="inspectionsToday">0</p>
+            </div>
+
+            <div class="card">
+              <h3>Average Score</h3>
+              <p id="avgScore">0</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Hygiene Risk Alert</h3>
+            <p id="riskEmployees">0</p>
+          </div>
+
+          <div class="card">
+            <h3>Task Status</h3>
+            <div class="chart-box small-chart">
+              <canvas id="taskChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Inspection Scores</h3>
+            <canvas id="inspectionChart"></canvas>
+          </div>
+
+          <div class="card">
+            <h3>Hygiene Compliance</h3>
+            <canvas id="hygieneChart"></canvas>
+          </div>
+
+          <div class="card">
+            <h3>Top Employee Performance</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Employee</th>
+                  <th>Average Score</th>
+                </tr>
+              </thead>
+              <tbody id="performanceTable"></tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3>Recent Activity</h3>
+            <ul id="activityFeed"></ul>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="./script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      async function loadDashboardStatsInline() {
+        try {
+          const response = await fetch('https://hygiene-management-system.onrender.com/api/dashboard/stats');
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data?.message || 'Failed to load dashboard stats');
+          }
+
+          document.getElementById('totalEmployees').innerText =
+            data.totalEmployees;
+
+          document.getElementById('pendingTasks').innerText =
+            data.pendingTasks;
+
+          document.getElementById('inspectionsToday').innerText =
+            data.inspectionsToday;
+
+          document.getElementById('avgScore').innerText =
+            Number(data.averageScore ?? 0).toFixed(1);
+        } catch (error) {
+          console.error('Dashboard loading failed:', error);
+        }
+      }
+
+      // Ensure stats load even if external script is modified
+      loadDashboardStatsInline();
+      
+      async function loadHygieneAlert() {
+        try {
+          const res = await fetch('https://hygiene-management-system.onrender.com/api/dashboard/hygiene-alert');
+          const data = await res.json();
+
+          if (!res.ok) {
+            throw new Error(data?.message || 'Failed to load hygiene alert');
+          }
+
+          const el = document.getElementById('riskEmployees');
+          if (el) {
+            el.innerText = `${data.riskEmployees} employees need attention`;
+          }
+        } catch (error) {
+          console.error('Hygiene alert loading failed:', error);
+        }
+      }
+
+      loadHygieneAlert();
+    </script>
+  </body>
+</html>
