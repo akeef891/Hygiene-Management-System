@@ -89,7 +89,7 @@ export const forgotPassword = async (req, res) => {
 
     await manager.save()
 
-    const resetLink = `http://localhost:5500/frontend/reset-password.html?token=${resetToken}`
+    const resetLink = `https://hygiene-management-system.onrender.com/reset-password.html?token=${resetToken}`
 
     const testAccount = await nodemailer.createTestAccount()
 
