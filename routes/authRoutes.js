@@ -1,24 +1,24 @@
-import express from 'express'
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
-import crypto from 'crypto'
-import nodemailer from 'nodemailer'
-import Manager from '../models/Manager.js'
+import express from "express";
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
+import crypto from "crypto"
+import nodemailer from "nodemailer"
+import Manager from "../models/Manager.js"; // Manager modelS
 
-const router = express.Router()
+const router = express.Router();
 
 // POST /api/auth/register
-router.post('/register', async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body
 
     if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' })
+      return res.status(400).json({ message: "Email and password are required" })
     }
 
     const existing = await Manager.findOne({ email })
     if (existing) {
-      return res.status(409).json({ message: 'Manager already exists' })
+      return res.status(409).json({ message: "Manager already exists" })
     }
 
     const salt = await bcrypt.genSalt(10)
@@ -30,44 +30,44 @@ router.post('/register', async (req, res) => {
     })
 
     return res.status(201).json({
-      message: 'Manager registered successfully',
+      message: "Manager registered successfully",
       managerId: manager._id,
     })
   } catch (error) {
-    console.error('Register error', error)
-    return res.status(500).json({ message: 'Server error' })
+    console.error("Register error", error)
+    return res.status(500).json({ message: "Server error" })
   }
 })
 
 // POST /api/auth/login
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body
 
     if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' })
+      return res.status(400).json({ message: "Email and password are required" })
     }
 
     const manager = await Manager.findOne({ email })
     if (!manager) {
-      return res.status(401).json({ message: 'Invalid credentials' })
+      return res.status(401).json({ message: "Invalid credentials" })
     }
 
     const isMatch = await bcrypt.compare(password, manager.password)
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' })
+      return res.status(401).json({ message: "Invalid credentials" })
     }
 
     const token = jwt.sign(
       { id: manager._id, email: manager.email },
-      process.env.JWT_SECRET || 'change_this_secret',
-      { expiresIn: '1h' }
+      process.env.JWT_SECRET || "change_this_secret",
+      { expiresIn: "1h" }
     )
 
     return res.json({ token })
   } catch (error) {
-    console.error('Login error', error)
-    return res.status(500).json({ message: 'Server error' })
+      console.error("Login error", error)
+    return res.status(500).json({ message: "Server error" })
   }
 })
 
@@ -79,10 +79,10 @@ export const forgotPassword = async (req, res) => {
     const manager = await Manager.findOne({ email })
 
     if (!manager) {
-      return res.status(404).json({ message: 'Manager not found' })
+      return res.status(404).json({ message: "Manager not found" })
     }
 
-    const resetToken = crypto.randomBytes(32).toString('hex')
+    const resetToken = crypto.randomBytes(32).toString("hex")
 
     manager.resetToken = resetToken
     manager.resetTokenExpire = Date.now() + 3600000
@@ -94,7 +94,7 @@ export const forgotPassword = async (req, res) => {
     const testAccount = await nodemailer.createTestAccount()
 
     const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
+      host: "smtp.ethereal.email",
       port: 587,
       secure: false,
       auth: {
@@ -104,30 +104,30 @@ export const forgotPassword = async (req, res) => {
     })
 
     const info = await transporter.sendMail({
-      from: '"Hygiene System" <no-reply@hygiene.com>',
+      from: '"Hygiene System" <no-reply@hygiene.com>"',
       to: email,
-      subject: 'Password Reset',
+      subject: "Password Reset",
       html: `<p>Click the link to reset your password:</p> <a href="${resetLink}">${resetLink}</a>`,
     })
 
-    console.log('Preview URL:', nodemailer.getTestMessageUrl(info))
+    console.log("Preview URL:", nodemailer.getTestMessageUrl(info))
 
-    res.json({ message: 'Reset email sent (test mode)' })
+    res.json({ message: "Reset email sent (test mode)" })
   } catch (err) {
-    console.error('Forgot password error', err)
+    console.error("Forgot password error", err)
     res.status(500).json({ message: err.message })
   }
 }
 
-router.post('/forgot-password', forgotPassword)
+router.post("/forgot-password", forgotPassword);
 
 // POST /api/auth/reset-password
-router.post('/reset-password', async (req, res) => {
+router.post("/reset-password", async (req, res) => {
   try {
     const { token, password } = req.body
 
     if (!token || !password) {
-      return res.status(400).json({ message: 'Token and password are required' })
+        return res.status(400).json({ message: "Token and password are required" })
     }
 
     const manager = await Manager.findOne({
@@ -136,7 +136,7 @@ router.post('/reset-password', async (req, res) => {
     })
 
     if (!manager) {
-      return res.status(400).json({ message: 'Invalid or expired reset token' })
+      return res.status(400).json({ message: "Invalid or expired reset token" })
     }
 
     const salt = await bcrypt.genSalt(10)
@@ -147,12 +147,12 @@ router.post('/reset-password', async (req, res) => {
     manager.resetTokenExpire = undefined
     await manager.save()
 
-    return res.json({ message: 'Password reset successful' })
+    return res.json({ message: "Password reset successful" })
   } catch (error) {
-    console.error('Reset password error', error)
-    return res.status(500).json({ message: 'Server error' })
+    console.error("Reset password error", error)
+    return res.status(500).json({ message: "Server error" })
   }
 })
 
-export default router
+export default router;
 
